@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 
-const Login = () => {
+const LoginPage= () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton}>
@@ -37,10 +37,10 @@ const Login = () => {
 
       <View style={styles.socialLoginContainer}>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('./assets/google.png')} style={styles.socialIcon} />
+          <Image source={require('../assets/google.png')} style={styles.socialIcon} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('./assets/facebook.png')} style={styles.socialIcon} />
+          <Image source={require('../assets/facebook.png')} style={styles.socialIcon} />
         </TouchableOpacity>
       </View>
     </View>
@@ -126,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default LoginPage;

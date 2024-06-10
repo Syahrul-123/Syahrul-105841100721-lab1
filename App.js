@@ -1,35 +1,46 @@
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import { Button } from 'react-native';
 
-import { useFonts } from 'expo-font'
-const App = () => {
-  
-  const [fontsLoaded, fontError] = useFonts({
-    'Metro-Bold': require('./assets/font/Metropolis-Bold.otf'),
-    'Metro-Medium': require('./assets/font/Metropolis-Medium.otf'),
-    'Metro-Semibold': require('./assets/font/Metropolis-SemiBold.otf'),
-    'Metro-Black': require('./assets/font/Metropolis-Black.otf'),
-
-
-  });
-      if (!fontsLoaded) return 
-      <View>
-          <Text>Font tidak ditemukan !</Text>
-      </View>
-
+function HomeScreen({navigation}) {
   return (
-      <View style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-        <Text style={{ fontSize: 30}}>Font Biasa</Text>
-        <Text style={{ fontFamily: 'Metro-Bold', fontSize: 30 }}>Metro Bold</Text>
-        <Text style={{ fontFamily: 'Metro-Medium', fontSize: 30 }}>Metro Medium</Text>
-        <Text style={{ fontFamily: 'Metro-Semibold', fontSize: 30 }}>Metro SemiBold</Text>
-        <Text style={{ fontFamily: 'Metro-Black', fontSize: 30 }}>Metro Black</Text> 
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button
+      title="Login"
+      onPress={() => navigation.navigate('Login')}
+  />
+    <Button
+      title="SignUp"
+      onPress={() => navigation.navigate('SignUp')}
+  />
+    <Button
+      title="ForgotPassword"
+      onPress={() => navigation.navigate('Forgot')}
+  />
+    </View>
 
-      </View>
-    )
+  );
 }
-export default App
+
+const Stack = createNativeStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginPage} />
+        <Stack.Screen name="SignUp" component={SignUpPage} />
+        <Stack.Screen name="Forgot" component={ForgotPasswordPage} />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
