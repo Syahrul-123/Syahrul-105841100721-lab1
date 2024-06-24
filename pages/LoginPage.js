@@ -1,129 +1,110 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 
-const LoginPage= () => {
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton}>
-        <Text style={styles.backButtonText}>{'<'}
+const LoginPage = ({ navigation }) => {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Login</Text>
+      
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+        />
+  
+        <Text style={styles.forgotYourPassword} onPress={() => navigation.navigate('ForgotPassword')}>
+          Forgot your paswword? 
         </Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>Login
-      </Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value="105841100721@student.unismuh.ac.id"
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-      />
-
-      <TouchableOpacity style={styles.forgotPassword}>
-        <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginButtonText}>LOGIN</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.orText}>Or login with social account</Text>
-
-      <View style={styles.socialLoginContainer}>
-        <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('../assets/google.png')} style={styles.socialIcon} />
+  
+        <TouchableOpacity style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>LOGIN</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.socialButton}>
-          <Image source={require('../assets/facebook.png')} style={styles.socialIcon} />
-        </TouchableOpacity>
+  
+        <Text style={styles.orLoginWith}>Or login with social account</Text>
+        <View style={styles.socialButtonsContainer}>
+          <TouchableOpacity style={styles.socialButton}>
+            <Image
+              source={require('../assets/google.png')}
+              style={styles.socialButtonIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialButton}>
+            <Image
+              source={require('../assets/facebook.png')}
+              style={styles.socialButtonIcon}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    paddingHorizontal: 30,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-  },
-  backButtonText: {
-    fontSize: 30,
-    color: 'black',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 40,
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginBottom: 20,
-  },
-  forgotPasswordText: {
-    color: 'black',
-    textDecorationLine: 'underline',
-  },
-  loginButton: {
-    width: '100%',
-    height: 50,
-    backgroundColor: 'red',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 100,
-  },
-  loginButtonText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  orText: {
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  socialLoginContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  socialButton: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#ccc',
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    marginHorizontal: 10,
-  },
-  socialIcon: {
-    width: 25,
-    height: 25,
-  },
-});
-
-export default LoginPage;
+    );
+  };
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      paddingHorizontal: 30,
+    },
+    title: {
+      fontSize: 36,
+      fontWeight: 'bold',
+      marginBottom: 20,
+    },
+    input: {
+      height: 50,
+      borderColor: 'black',
+      borderWidth: 1,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      fontSize: 18,
+      marginBottom: 10,
+    },
+    forgotYourPassword: {
+      marginTop: 10,
+      fontSize: 16,
+    },
+    loginButton: {
+      backgroundColor: 'red',
+      paddingVertical: 15,
+      borderRadius: 5,
+      marginTop: 20,
+      alignItems: 'center',
+    },
+    loginButtonText: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    orLoginWith: {
+      marginTop: 20,
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    socialButtonsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop: 20,
+    },
+    socialButton: {
+      backgroundColor: '#f0f0f0',
+      padding: 10,
+      borderRadius: 5,
+      marginHorizontal: 10,
+      alignItems: 'center',
+      width: 50,
+      height: 50,
+      justifyContent: 'center',
+    },
+    socialButtonIcon: {
+      width: 30,
+      height: 30,
+    },
+  });
+  
+  export default LoginPage;

@@ -1,129 +1,117 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 
-const SignUpPage = () => {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Sign up</Text>
-  
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          autoCapitalize="none"
-        />
-  
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-  
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-        />
-  
-        <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Already have an account?</Text>
-        </View>
-  
-        <TouchableOpacity style={styles.signUpButton}>
-          <Text style={styles.signUpButtonText}>SIGN UP</Text>
+const SignUpPage = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Sign up</Text>
+      
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+      />
+
+      <Text style={styles.alreadyHaveAccount}>
+        Already have an account? <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>Login</Text>
+      </Text>
+
+      <TouchableOpacity style={styles.signUpButton}>
+        <Text style={styles.signUpButtonText}>SIGN UP</Text>
+      </TouchableOpacity>
+
+      <Text style={styles.orSignUpWith}>Or sign up with social account</Text>
+      <View style={styles.socialButtonsContainer}>
+        <TouchableOpacity style={styles.socialButton}>
+          <Image
+            source={require('../assets/google.png')}
+            style={styles.socialButtonIcon}
+          />
         </TouchableOpacity>
-  
-        <Text style={styles.orText}>Or sign up with social account</Text>
-  
-        <View style={styles.socialLoginContainer}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image source={require('../assets/google.png')} style={styles.socialIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image source={require('../assets/facebook.png')} style={styles.socialIcon} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.socialButton}>
+          <Image
+            source={require('../assets/facebook.png')}
+            style={styles.socialButtonIcon}
+          />
+        </TouchableOpacity>
       </View>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      justifyContent: 'center',
-      paddingHorizontal: 30,
-    },
-    backButton: {
-      position: 'absolute',
-      top: 40,
-      left: 20,
-    },
-    backButtonText: {
-      fontSize: 30,
-      color: 'black',
-    },
-    title: {
-      fontSize: 32,
-      fontWeight: 'bold',
-      marginBottom: 40,
-      textAlign: 'left',
-      alignSelf: 'flex-start',
-    },
-    input: {
-      width: '100%',
-      height: 50,
-      borderColor: '#ccc',
-      borderWidth: 1,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      marginBottom: 20,
-    },
-    signUpButton: {
-      width: '100%',
-      height: 50,
-      backgroundColor: 'red',
-      borderRadius: 25,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 20,
-    },
-    signUpButtonText: {
-      color: 'white',
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    footerContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end', 
-      alignItems: 'center',
-      marginBottom: 50,
-    },
-    footerText: {
-      color: 'black',
-    },
-    orText: {
-      textAlign: 'center',
-      marginBottom: 20, 
-    },
-    socialLoginContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      width: '100%',
-    },
-    socialButton: {
-      width: 50,
-      height: 50,
-      backgroundColor: '#ccc',
-      borderRadius: 5,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 10,
-    },
-    socialIcon: {
-      width: 25,
-      height: 25,
-    },
-  });
-  
-  export default SignUpPage;
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    height: 50,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  alreadyHaveAccount: {
+    marginTop: 10,
+    fontSize: 16,
+  },
+  loginLink: {
+    color: 'red',
+  },
+  signUpButton: {
+    backgroundColor: 'red',
+    paddingVertical: 15,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  signUpButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  orSignUpWith: {
+    marginTop: 20,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  socialButton: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 10,
+    alignItems: 'center',
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+  },
+  socialButtonIcon: {
+    width: 30,
+    height: 30,
+  },
+});
+
+export default SignUpPage;
