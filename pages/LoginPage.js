@@ -3,14 +3,13 @@ import { Text, TextInput, TouchableOpacity, View, Image, StyleSheet } from 'reac
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 
-const SignUpPage = () => {
+const LoginPage = () => {
   const [fontsLoaded] = useFonts({
-    'Metropolis-Bold': require('../assets/fonts/Metropolis-Bold.otf'),
-    'Metropolis-Medium': require('../assets/fonts/Metropolis-Medium.otf'),
+    'Metropolis-Bold': require('../assets/font/Metropolis-Bold.otf'),
+    'Metropolis-Medium': require('../assets/font/Metropolis-Medium.otf'),
   });
 
-  const [formSignUp, setForm] = useState({
-    name: '',
+  const [formLogin, setForm] = useState({
     email: '',
     password: ''
   });
@@ -18,11 +17,11 @@ const SignUpPage = () => {
   const navigation = useNavigation();
 
   const onSubmit = () => {
-    if (formSignUp.name && formSignUp.email && formSignUp.password) {
-      alert('Sign Up Berhasil');
-      navigation.navigate('Login');
+    if (formLogin.email && formLogin.password) {
+      alert('Login Berhasil');
+      navigation.navigate('Home');
     } else {
-      alert('Sign Up Gagal', 'Semua field harus diisi');
+      alert('Login Gagal');
     }
   };
 
@@ -36,41 +35,32 @@ const SignUpPage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { fontFamily: 'Metropolis-Bold' }]}>Sign Up</Text>
-      <Text style={styles.label}>Name</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        onChangeText={(text) => setForm({ ...formSignUp, name: text })}
-        value={formSignUp.name}
-      />
+      <Text style={[styles.title, { fontFamily: 'Metropolis-Bold' }]}>Login</Text>
       <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
-        onChangeText={(text) => setForm({ ...formSignUp, email: text })}
-        value={formSignUp.email}
+        onChangeText={(text) => setForm({ ...formLogin, email: text })}
+        value={formLogin.email}
       />
       <Text style={styles.label}>Password</Text>
       <TextInput
         style={styles.input}
         placeholder="Password"
         secureTextEntry={true}
-        onChangeText={(text) => setForm({ ...formSignUp, password: text })}
-        value={formSignUp.password}
+        onChangeText={(text) => setForm({ ...formLogin, password: text })}
+        value={formLogin.password}
       />
-      <TouchableOpacity style={styles.signUpButton} onPress={onSubmit}>
-        <Text style={styles.signUpButtonText}>Sign Up</Text>
+      <TouchableOpacity style={styles.forgotPasswordContainer} onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text style={[styles.forgotPasswordText, { fontFamily: 'Metropolis-Medium' }]}>
+          Forgot Password? <Text style={styles.forgotPasswordLink}>→</Text>
+        </Text>
       </TouchableOpacity>
-      <View style={styles.loginContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={[styles.loginText, { fontFamily: 'Metropolis-Medium' }]}>
-            Already have an account? <Text style={styles.loginLink}>→</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.socialSignUpContainer}>
-        <Text style={styles.orSignUpWith}>Or sign up with a social account</Text>
+      <TouchableOpacity style={styles.loginButton} onPress={onSubmit}>
+        <Text style={styles.loginButtonText}>Login</Text>
+      </TouchableOpacity>
+      <View style={styles.socialLoginContainer}>
+        <Text style={styles.orLoginWith}>Or Login With social media</Text>
         <View style={styles.socialButtonsContainer}>
           <TouchableOpacity style={styles.socialButton}>
             <Image source={require('../assets/google.png')} style={styles.socialButtonIcon} />
@@ -109,33 +99,33 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
   },
-  signUpButton: {
+  forgotPasswordContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  forgotPasswordText: {
+    fontSize: 16,
+  },
+  forgotPasswordLink: {
+    color: 'red',
+  },
+  loginButton: {
     backgroundColor: 'red',
     paddingVertical: 15,
     borderRadius: 5,
     marginTop: 20,
     alignItems: 'center',
   },
-  signUpButtonText: {
+  loginButtonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  loginContainer: {
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  loginText: {
-    fontSize: 16,
-  },
-  loginLink: {
-    color: 'red',
-  },
-  socialSignUpContainer: {
+  socialLoginContainer: {
     marginTop: 20,
     alignItems: 'center',
   },
-  orSignUpWith: {
+  orLoginWith: {
     fontSize: 16,
     textAlign: 'center',
   },
@@ -169,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpPage;
+export default LoginPage;
