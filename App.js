@@ -1,97 +1,128 @@
-import * as React from 'react';
-import { View, Text, Button, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginPage from './pages/LoginPage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Homeaktif from './assets/Home-aktif.jpg';
-import Homenonaktif from './assets/Home-non-aktif.jpg';
-import Shopaktif from './assets/Shop-aktif.jpg';
-import Shopnonaktif from './assets/Shop-non-aktif.jpg'
-import Shop from './Shop';
-import { AntDesign} from '@expo/vector-icons';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import Bag from './Bag';
-import Profil from './Profil';
-import Home from './Home';
+import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
+import React, { useState } from 'react';
+import axios from 'axios';
 
+const LoginSimak = () => {
+  const [data, setData] = useState({
+    nim: '',
+    password: ''
+  });
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState('');
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+  const onSubmit = () => {
+    axios.post('https://api.beasiswa.unismuh.ac.id/api/login', {
+      username: data.nim,
+      password: data.password
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setUserData(response.data.data);
+          setError('');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        setError('Ada kesalahan. Silahkan periksa kembali nim dan password anda.');
+        setUserData(null);
+      });
+  }
 
-function MyTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={focused ? Homeaktif : Homenonaktif}
-              style={{ width: 30, height: 30 }}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Shop"
-        component={Shop}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={focused ? Shopaktif : Shopnonaktif}
-              style={{ width: 30, height: 30 }}
-            />
-          ),
-        }}
-      />
-      
-      <Tab.Screen
-        name="Bag"
-        component={Bag}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <SimpleLineIcons name='handbag' color={focused? "red":"gray" } size={30}/>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profil"
-        component={Profil}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <AntDesign name='user' color={focused? "red":"gray" } size={30}/>
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>HomeScreen</Text>
-      <Button
-        title="Go to Login"
-        onPress={() => navigation.navigate('Login')}
-      />
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          onChangeText={(value) => setData({ ...data, nim: value })}
+          placeholder="Nim"
+          placeholderTextColor="#aaa"
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={(value) => setData({ ...data, password: value })}
+          placeholder="Password"
+          placeholderTextColor="#aaa"
+          secureTextEntry
+        />
+        <Button title="Login" onPress={onSubmit} />
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      </View>
+      {userData && (
+        <View style={styles.userDataContainer}>
+          <Text style={styles.userDataText}>ID: {userData.id}</Text>
+          <Text style={styles.userDataText}>Username: {userData.username}</Text>
+          <Text style={styles.userDataText}>Name: {userData.nama}</Text>
+          <Text style={styles.userDataText}>Role: {userData.role}</Text>
+          <Image
+            style={styles.userImage}
+            source={{ uri: 'https://simakad.unismuh.ac.id/upload/mahasiswa/${userData.username}.jpg'}}
+          />
+        </View>
+      )}
     </View>
   );
 }
 
+export default LoginSimak;
 
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Main" component={MyTabs} options={{headerShown:false}}/>
-        <Stack.Screen name="Login" component={LoginPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    padding: 20,
+  },
+  inputContainer: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    marginBottom: 20,
+  },
+  input: {
+    height: 50,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  userDataContainer: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    alignItems: 'center',
+  },
+  userDataText: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
+  },
+  userImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginTop: 10,
+  },
+});
