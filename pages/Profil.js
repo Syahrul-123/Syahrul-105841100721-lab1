@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const Profile = () => {
-  const user = {
-    name: "Syahrul Suhardi",
-    email: "SyahrulS@mail.com",
-    profilePicture: require('./assets/profilku.jpg') // Use require directly here
-  };
+const Profil = () => {
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    profilePicture: require('../assets/profilku.jpg')
+  });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('user');
+        if (userData) {
+          const parsedData = JSON.parse(userData);
+          setUser({
+            name: parsedData.name || 'N/A',
+            email: parsedData.email || 'N/A',
+            profilePicture: require('../assets/profilku.jpg') // This could be dynamic if profile images are stored
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching user data: ', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const menuItems = [
     { label: 'My orders', value: 'Already have 12 orders' },
@@ -18,39 +40,43 @@ const Profile = () => {
   ];
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.profileHeader}>
-        <Text style={styles.profileHeaderText}>My Profile</Text>
-      </View>
-      <View style={styles.header}>
-        <Image source={user.profilePicture} style={styles.profilePicture} />
-        <Text style={styles.name}>{user.name}</Text>
-        <Text style={styles.email}>{user.email}</Text>
-      </View>
-      {menuItems.map((item, index) => (
-        <TouchableOpacity key={index} style={styles.menuItem}>
-          <View style={styles.menuItemContent}>
-            <View>
-              <Text style={styles.menuLabel}>{item.label}</Text>
-              <Text style={styles.menuValue}>{item.value}</Text>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.profileHeader}>
+          <Text style={styles.profileHeaderText}>My Profile</Text>
+        </View>
+        <View style={styles.header}>
+          <Image source={user.profilePicture} style={styles.profilePicture} />
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.email}>{user.email}</Text>
+        </View>
+        {menuItems.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.menuItem}>
+            <View style={styles.menuItemContent}>
+              <View>
+                <Text style={styles.menuLabel}>{item.label}</Text>
+                <Text style={styles.menuValue}>{item.value}</Text>
+              </View>
+              <Text style={styles.menuArrow}>→</Text>
             </View>
-            <Text style={styles.menuArrow}>></Text>
-          </View>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    
   );
 };
 
-export default Profile;
+export default Profil;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   profileHeader: {
-    backgroundColor: '#f9f9f9',
+    marginTop: 30,
+    backgroundColor: '#f9f9f9', 
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
@@ -63,7 +89,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff', 
   },
   profilePicture: {
     width: 80,
@@ -83,6 +109,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+    backgroundColor: '#fff', 
   },
   menuItemContent: {
     flexDirection: 'row',

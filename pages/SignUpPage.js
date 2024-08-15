@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, Image, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUpPage = () => {
   const [fontsLoaded] = useFonts({
-    'Metropolis-Bold': require('../assets/fonts/Metropolis-Bold.otf'),
-    'Metropolis-Medium': require('../assets/fonts/Metropolis-Medium.otf'),
+    'Metropolis-Bold': require('../assets/font/Metropolis-Bold.otf'),
+    'Metropolis-Medium': require('../assets/font/Metropolis-Medium.otf'),
   });
 
   const [formSignUp, setForm] = useState({
@@ -17,12 +19,31 @@ const SignUpPage = () => {
 
   const navigation = useNavigation();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (formSignUp.name && formSignUp.email && formSignUp.password) {
-      alert('Sign Up Berhasil');
-      navigation.navigate('Login');
+      try {
+        await AsyncStorage.setItem('user', JSON.stringify({
+          name: formSignUp.name,
+          email: formSignUp.email,
+          password: formSignUp.password
+        }));
+        alert('Sign Up Berhasil');
+        navigation.navigate('Login');
+        checkStoredData(); // Cek data yang tersimpan
+      } catch (error) {
+        alert('Terjadi kesalahan saat menyimpan data: ' + error.message);
+      }
     } else {
       alert('Sign Up Gagal', 'Semua field harus diisi');
+    }
+  };
+
+  const checkStoredData = async () => {
+    try {
+      const userData = await AsyncStorage.getItem('user');
+      console.log('Data pengguna yang tersimpan:', userData);
+    } catch (error) {
+      console.error('Gagal mengambil data: ' + error.message);
     }
   };
 
@@ -35,7 +56,10 @@ const SignUpPage = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#ff7e5f', '#feb47b']}
+      style={styles.container}
+    >
       <Text style={[styles.title, { fontFamily: 'Metropolis-Bold' }]}>Sign Up</Text>
       <Text style={styles.label}>Name</Text>
       <TextInput
@@ -80,14 +104,13 @@ const SignUpPage = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     justifyContent: 'center',
     paddingHorizontal: 30,
   },

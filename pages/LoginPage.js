@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View, Image, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginPage = () => {
   const [fontsLoaded] = useFonts({
@@ -16,12 +18,29 @@ const LoginPage = () => {
 
   const navigation = useNavigation();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (formLogin.email && formLogin.password) {
-      alert('Login Berhasil');
-      navigation.navigate('Home');
+      try {
+        const userData = await AsyncStorage.getItem('user');
+        console.log('Stored User Data:', userData); // Log data from AsyncStorage
+
+        if (userData) {
+          const { email, password } = JSON.parse(userData);
+
+          if (formLogin.email === email && formLogin.password === password) {
+            alert('Login Berhasil');
+            navigation.navigate('Main');
+          } else {
+            alert('Login Gagal', 'Email atau password salah');
+          }
+        } else {
+          alert('Login Gagal', 'Tidak ada data pengguna');
+        }
+      } catch (error) {
+        alert('Terjadi kesalahan: ' + error.message);
+      }
     } else {
-      alert('Login Gagal');
+      alert('Login Gagal', 'Semua field harus diisi');
     }
   };
 
@@ -34,7 +53,10 @@ const LoginPage = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#ff7e5f', '#feb47b']}
+      style={styles.container}
+    >
       <Text style={[styles.title, { fontFamily: 'Metropolis-Bold' }]}>Login</Text>
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -51,7 +73,7 @@ const LoginPage = () => {
         onChangeText={(text) => setForm({ ...formLogin, password: text })}
         value={formLogin.password}
       />
-      <TouchableOpacity style={styles.forgotPasswordContainer} onPress={() => navigation.navigate('ForgotPassword')}>
+      <TouchableOpacity style={styles.forgotPasswordContainer} onPress={() => navigation.navigate('Forgot')}>
         <Text style={[styles.forgotPasswordText, { fontFamily: 'Metropolis-Medium' }]}>
           Forgot Password? <Text style={styles.forgotPasswordLink}>→</Text>
         </Text>
@@ -70,14 +92,13 @@ const LoginPage = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
     justifyContent: 'center',
     paddingHorizontal: 30,
   },

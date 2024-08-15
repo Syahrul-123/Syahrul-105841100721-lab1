@@ -1,48 +1,67 @@
-import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-
-// Import images
-import MainImage from './assets/tampil.jpg';
-import Image1 from './assets/set.jpg';
-import Image2 from './assets/zet.jpg';
-import Image3 from './assets/paket.jpg';
-import Image4 from './assets/laz.jpg';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Shop = () => {
   return (
-    <ScrollView style={styles.container}>
-      {/* Main Image at the top */}
-      <View style={styles.mainImageContainer}>
-        <Image source={MainImage} style={styles.mainImage} />
-      </View>
+    <LinearGradient
+      colors={['#ff7e5f', '#feb47b']} 
+      style={styles.container}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.sectionTitle}>Menu Lazunaku</Text>
+        </View>
 
-      {/* Section with horizontal slider */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Menu Lazunaku</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity style={styles.item}>
-            <Image source={Image1} style={styles.image} />
-            <Text style={styles.itemText}>satu paket gratis es teh</Text>
-            <Text style={styles.price}>Rp.15.000</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
-            <Image source={Image2} style={styles.image} />
-            <Text style={styles.itemText}>satu paket </Text>
-            <Text style={styles.price}>Rp.15.000</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
-            <Image source={Image3} style={styles.image} />
-            <Text style={styles.itemText}>paket promo</Text>
-            <Text style={styles.price}>Rp100.000</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
-            <Image source={Image4} style={styles.image} />
-            <Text style={styles.itemText}>paket hemat</Text>
-            <Text style={styles.price}>Rp20.000</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    </ScrollView>
+        <View style={styles.mainImageContainer}>
+          <Image
+            source={require('../assets/tampil.jpg')}
+            style={styles.mainImage}
+            resizeMode="contain"
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Promo</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.itemsContainer}>
+              <TouchableOpacity style={styles.item}>
+                <Image
+                  source={require('../assets/set.jpg')}
+                  style={styles.image}
+                />
+                <Text style={styles.itemText}>Satu Paket+Es Teh</Text>
+                <Text style={styles.price}>Rp.15.000</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item}>
+                <Image
+                  source={require('../assets/zet.jpg')}
+                  style={styles.image}
+                />
+                <Text style={styles.itemText}>Big Order</Text>
+                <Text style={styles.price}>Rp.15.000</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item}>
+                <Image
+                  source={require('../assets/paket.jpg')}
+                  style={styles.image}
+                />
+                <Text style={styles.itemText}>Promo Syawalan</Text>
+                <Text style={styles.price}>Rp100.000</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.item}>
+                <Image
+                  source={require('../assets/laz.jpg')}
+                  style={styles.image}
+                />
+                <Text style={styles.itemText}>Paket Super Fresh</Text>
+                <Text style={styles.price}>Rp20.000</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
@@ -51,10 +70,24 @@ export default Shop;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  headerContainer: {
+    marginTop: 50,
+    marginBottom: -20,
+    alignItems: 'left',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    color: 'black',
+    fontWeight: 'bold',
   },
   mainImageContainer: {
-    padding: 20,
+    marginBottom: -20,
     alignItems: 'center',
   },
   mainImage: {
@@ -63,15 +96,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   section: {
-    marginVertical: 10,
+    marginBottom: 20,
   },
-  sectionTitle: {
-    fontSize: 24,
-    marginHorizontal: 20,
-    marginBottom: 10,
-    color: '#4CAF50', // Warna hijau
-    fontWeight: 'bold',
-    fontFamily: 'Roboto', // Pastikan font tersedia di proyek Anda
+  itemsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   item: {
     marginHorizontal: 10,
@@ -85,14 +114,12 @@ const styles = StyleSheet.create({
   itemText: {
     marginTop: 5,
     fontSize: 18,
-    color: 'black', // Ubah warna teks menjadi hitam
+    color: 'black',
     fontWeight: 'bold',
-    fontFamily: 'Cochin', // Gunakan font yang lebih menarik
   },
   price: {
     fontSize: 16,
     color: 'red',
     fontWeight: 'bold',
-    fontFamily: 'Roboto', // Pastikan font tersedia di proyek Anda
   },
 });

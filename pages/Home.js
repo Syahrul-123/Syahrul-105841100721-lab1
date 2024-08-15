@@ -1,45 +1,60 @@
-import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.welcomeText}>Selamat Datang di Lazunaku</Text>
+  const [userName, setUserName] = useState('');
 
-      <View style={styles.topSection}>
-        <ImageBackground source={require('./assets/awal3.jpg')} style={styles.imageBackground}>
-          
-        </ImageBackground>
+  useEffect(() => {
+    const getUserName = async () => {
+      try {
+        const storedName = await AsyncStorage.getItem('userName');
+        if (storedName) {
+          setUserName(storedName);
+        }
+      } catch (error) {
+        console.error('Failed to load user name:', error);
+      }
+    };
+
+    getUserName();
+  }, []);
+
+  return (
+    <LinearGradient
+      colors={['#ff7e5f', '#feb47b']}
+      style={styles.container}
+    >
+      <View style={styles.content}>
+        <Text style={styles.welcomeText}>Selamat Datang, {userName}</Text>
+        <Image source={require('../assets/logo.png')} style={styles.logo} />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
-
-export default Home;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  welcomeText: {
-    textAlign: 'center',
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginVertical: 20,
-    color: '#000',
-    paddingVertical: 10,
-  },
-  topSection: {
-    flex: 1,
-    marginVertical: 110,
-  },
-  marginTop: {
-    marginTop: 30, 
-  },
-  imageBackground: {
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  welcomeText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#000',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  logo: {
+    width: 200,
+    height: 100,
   },
 });
 
+export default Home;
